@@ -287,11 +287,12 @@ const config = {
     "db"
   ],
   "activeProvider": "postgresql",
+  "postinstall": false,
   "inlineDatasources": {
     "db": {
       "url": {
         "fromEnvVar": "DATABASE_URL",
-        "value": "postgresql://user:password@localhost:5436/nextecommerce"
+        "value": null
       }
     }
   },

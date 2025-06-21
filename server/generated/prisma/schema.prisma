@@ -15,15 +15,17 @@ datasource db {
 }
 
 model User {
-  id           String   @id @default(cuid())
+  id           String    @id @default(cuid())
   name         String?
-  email        String   @unique
+  email        String    @unique
   password     String
-  role         Role     @default(USER)
-  createdAT    DateTime @default(now())
-  updatedAt    DateTime @updatedAt
-  refreshToken String?  @unique
+  role         Role      @default(USER)
+  createdAT    DateTime  @default(now())
+  updatedAt    DateTime  @updatedAt
+  refreshToken String?   @unique
   cart         Cart?
+  addresses    Address[]
+  order        Order[]
 }
 
 model product {
@@ -78,6 +80,65 @@ model Coupon {
   usageCount      Int
   createdAt       DateTime @default(now())
   updatedAt       DateTime @updatedAt
+  orders          Order[]
+}
+
+model Address {
+  id         String   @id @default(cuid())
+  userId     String
+  user       User     @relation(fields: [userId], references: [id])
+  name       String
+  address    String
+  city       String
+  country    String
+  postalCode String
+  phone      String
+  isDefault  Boolean  @default(false)
+  createdAt  DateTime @default(now())
+  updatedAt  DateTime @updatedAt
+  orders     Order[]
+
+  @@index([userId])
+}
+
+model Order {
+  id            String        @id @default(cuid())
+  addressId     String
+  address       Address       @relation(fields: [addressId], references: [id])
+  userId        String
+  user          User          @relation(fields: [userId], references: [id])
+  items         OrderItem[]
+  status        OrderStatus   @default(PENDING)
+  paymentMethod PaymentMethod
+  paymentStatus PaymentStatus @default(PENDING)
+  couponId      String?
+  coupon        Coupon?       @relation(fields: [couponId], references: [id])
+  total         Float
+  paymentId     String?
+  createdAt     DateTime      @default(now())
+  updatedAt     DateTime      @updatedAt
+
+  @@index([userId])
+  @@index([addressId])
+  @@index([couponId])
+}
+
+model OrderItem {
+  id              String   @id @default(cuid())
+  orderId         String
+  order           Order    @relation(fields: [orderId], references: [id])
+  productId       String
+  productName     String
+  quantity        Float
+  productCategory String
+  price           Float
+  color           String?
+  size            String?
+  createdAt       DateTime @default(now())
+  updatedAt       DateTime @updatedAt
+
+  @@index([orderId])
+  @@index([productId])
 }
 
 model FeatureBanner {
@@ -85,6 +146,22 @@ model FeatureBanner {
   imageUrl  String
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
+}
+
+enum OrderStatus {
+  PENDING
+  PROCESSING
+  SHIPPED
+  DELIVERED
+}
+
+enum PaymentMethod {
+  CREDIT_CARD
+}
+
+enum PaymentStatus {
+  PENDING
+  COMPLETED
 }
 
 enum Role {

@@ -3,7 +3,6 @@ import { AuthenticatedRequest } from "../middleware/authMiddleware";
 import fs from "fs";
 import cloudinary from "../config/cloudinary";
 import { prisma } from "../server";
-import express from "express";
 
 export const addFeatureBanner = async (
   req: AuthenticatedRequest,
