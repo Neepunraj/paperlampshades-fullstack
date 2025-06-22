@@ -3,7 +3,7 @@ import { AuthenticatedRequest } from "../middleware/authMiddleware";
 import cloudinary from "../config/cloudinary";
 import { prisma } from "../server";
 import fs from "fs";
-import { Prisma } from "../../generated/prisma/index";
+import { Prisma } from "../generated/prisma";
 export const createProduct = async (
   req: AuthenticatedRequest,
   res: Response

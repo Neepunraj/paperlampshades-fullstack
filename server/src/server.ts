@@ -9,7 +9,7 @@ import settingRoutes from "./routes/settingRoutes";
 import cartRoutes from "./routes/cartRoutes";
 import addressRoutes from "./routes/addressRoutes";
 import orderRoutes from "./routes/orderRoutes";
-import { PrismaClient } from "../generated/prisma";
+import { PrismaClient } from "./generated/prisma";
 
 const app = express();
 const PORT = process.env.PORT || 3001;
