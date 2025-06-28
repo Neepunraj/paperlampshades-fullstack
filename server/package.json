@@ -4,7 +4,7 @@
   "main": "src/server.ts",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "start": "npx prisma migrate deploy && node dist/src/server.js",
+    "start": "npx prisma migrate deploy && npm run prisma:seed && node dist/src/server.js",
     "dev": "nodemon src/server.ts",
     "build": "tsc && prisma generate",
     "prisma:generate": "prisma generate",
