@@ -4,7 +4,7 @@ const prisma = new PrismaClient();
 
 async function main() {
   const email = "admin@gmail.com";
-  const password = "12345";
+  const password = process.env.PASSWORDPRISMA || "12345";
   const name = "Super Admin";
   const existingSuperAdmin = await prisma.user.findFirst({
     where: { email },
