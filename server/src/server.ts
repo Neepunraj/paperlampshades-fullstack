@@ -1,6 +1,7 @@
+import dotenv from "dotenv";
+dotenv.config();
 import express from "express";
 import cors from "cors";
-import dotenv from "dotenv";
 import authRoutes from "./routes/authRoutes";
 import cookieParser from "cookie-parser";
 import productRoutes from "./routes/productRoutes";
@@ -10,12 +11,19 @@ import cartRoutes from "./routes/cartRoutes";
 import addressRoutes from "./routes/addressRoutes";
 import orderRoutes from "./routes/orderRoutes";
 import { PrismaClient } from "./generated/prisma";
+import type { CorsOptions } from "cors";
 
 const app = express();
 const PORT = process.env.PORT || 3001;
-dotenv.config();
-const corsOptions = {
-  origin: process.env.ORIGIN || "http://localhost:3000",
+const allowedOrigins = (process.env.ORIGIN || "").split(",");
+const corsOptions: CorsOptions = {
+  origin: function (origin, callback) {
+    if (!origin || allowedOrigins.includes(origin)) {
+      callback(null, true);
+    } else {
+      callback(new Error("Not allowed by CORS"));
+    }
+  },
   credentials: true,
   methods: ["GET", "POST", "PUT", "DELETE", "OPTIONS"],
   allowedHeaders: ["Content-Type", "Authorization"],
